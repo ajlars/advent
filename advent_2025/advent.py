@@ -1,5 +1,5 @@
 import sys
-import solutions.day1
+import importlib
 
 try:
     day = int(sys.argv[1])
@@ -9,15 +9,17 @@ except:
     print(f'Usage: "py advent.py <day_integer> <part_integer> <mode_string>"\nReceived args: {sys.argv[1:]}')
 
 def main():
-    s = solutions
-    solution = None
     if not day:
         return
-    match day:
-        case 1:
-            s.day1.main(part, mode)
-        case _:
-            print(f'No matching day configured for day {day}')
+    try:
+        solution_module = importlib.import_module(f'solutions.day{day}')
+        solution_module.main(part, mode)
+    except ModuleNotFoundError:
+        print(f'No solution module found for day {day}')
+        return
+    except AttributeError:
+        print(f'Solution module for day {day} does not have a main() function')
+        return
 
 if __name__ == "__main__":
     main()
