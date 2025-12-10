@@ -1,11 +1,19 @@
-from collections import namedtuple
+from typing import NamedTuple
 
-Point = namedtuple("Point", ["x", "y"])
+class Point(NamedTuple):
+    x: int
+    y: int
 
-Point.__add__ = lambda self, other: Point(self.x + other.x, self.y + other.y)
-Point.__sub__ = lambda self, other: Point(self.x - other.x, self.y - other.y)
-Point.__str__ = lambda self: f'({self.x}, {self.y})'
-
+    def __sub__(self, other: Point) -> Point:
+        if not isinstance(other, Point):
+            return NotImplemented
+        return Point(self.x - other.x, self.y - other.y)
+    def __add__(self, other: Point) -> Point:
+        if not isinstance(other, Point):
+            return NotImplemented
+        return Point(self.x + other.x, self.y + other.y)
+    def __str__(self) -> str:
+        return f'({self.x}, {self.y})'
 class Grid():
     def __init__(self, grid_array: list) -> None:
         self._array = []
@@ -38,7 +46,7 @@ class Grid():
         for point in self._point_list:
             if self.value_at_point(point) == value:
                 return point
-        return None
+        return Point(-1, -1)
 
     def find_all_values(self, value) -> list[Point]:
         found_points = []

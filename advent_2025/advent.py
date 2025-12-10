@@ -13,13 +13,15 @@ def main():
         return
     try:
         solution_module = importlib.import_module(f'solutions.day{day}')
-        solution_module.main(part, mode)
     except ModuleNotFoundError:
         print(f'No solution module found for day {day}')
         return
-    except AttributeError:
+    
+    if not hasattr(solution_module, 'main'):
         print(f'Solution module for day {day} does not have a main() function')
         return
+    
+    solution_module.main(part, mode)
 
 if __name__ == "__main__":
     main()
