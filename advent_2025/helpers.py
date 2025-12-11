@@ -73,6 +73,41 @@ class Grid():
                     surroundings.append(neighbor)
         return surroundings
 
+    def get_values_to_edge(self, point: Point, direction: Point) -> list:
+        """
+        Returns all values between the given point and the edge of the grid in the specified direction.
+
+        Args:
+            point: Starting point (not included in result)
+            direction: Direction vector (e.g., Point(0, -1) for up, Point(1, 0) for right)
+
+        Returns:
+            List of values from the next point in the direction to the edge
+        """
+        values = []
+        current = point + direction
+        while self.location_is_valid(current):
+            values.append(self.value_at_point(current))
+            current = current + direction
+        return values
+    
+    def get_points_to_edge(self, point: Point, direction: Point) -> list[Point]:
+        """
+        Returns all points between the given point and the edge of the grid in the specified direction.
+
+        Args:
+            point: Starting point (not included in result)
+            direction: Direction vector (e.g., Point(0, -1) for up, Point(1, 0) for right)
+        Returns:
+            List of points from the next point in the direction to the edge
+        """
+        points = []
+        current = point + direction
+        while self.location_is_valid(current):
+            points.append(current)
+            current = current + direction
+        return points
+
     @property
     def width(self):
         return self._width
